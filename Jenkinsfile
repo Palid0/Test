@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-        stage('Crea el Webhook en caso de que no exista') {
+        stage('Crea el Webhooks en caso de que no exista') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR', variable: 'GITHUB_TOKEN')]) {
