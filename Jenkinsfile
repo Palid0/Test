@@ -25,7 +25,7 @@ pipeline {
         stage('Crea el Webhooks en caso de que no exista') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR1', variable: 'GITHUB_TOKEN')]) {
                         def existingWebhook = sh(
                             script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/GRISE-UPM/Test/hooks',
                             returnStdout: true).trim()
@@ -55,7 +55,7 @@ pipeline {
                 if (env.CHANGE_ID != null) {
                     def pullRequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def status = '{"state": "success", "description": "Pull Request build successfull", "context": "Jenkins"}'
-                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR1', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -66,7 +66,7 @@ pipeline {
                     }
                 } else {
                     def commitSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    withCredentials([string(credentialsId: 'TOKEN_JENKINS', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_JENKINS1', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -83,7 +83,7 @@ pipeline {
                 if (env.CHANGE_ID != null) {
                     def pullRequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def status = '{"state": "failure", "description": "Pull Request build failed", "context": "Jenkins"}'
-                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR1', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -94,7 +94,7 @@ pipeline {
                     }
                 } else {
                     def commitSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    withCredentials([string(credentialsId: 'TOKEN_JENKINS', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_JENKINS1', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token $GITHUB_TOKEN" \
