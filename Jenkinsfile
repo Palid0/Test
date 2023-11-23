@@ -1,11 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage('Mantenimiento de la database') {
+        stage('Mantenimientos de la database') {
             steps {
                 script {
                     // Se descarga la base de datos Employees.db
-                    sh 'wget -O Employees.db https://github.com/Luckvill/Test/raw/main/Employees.db'
+                    sh 'wget -O Employees.db https://github.com/Lolailo123/Test/raw/main/Employees.db'
                     
                     // Se hace una copia de los datos actuales
                     sh 'sqlite3 Employees.db ".dump" > Backup.sql'
@@ -22,12 +22,12 @@ pipeline {
             }
         }
 
-        stage('Crea el Webhooks en caso de que no exista') {
+        stage('Crea el Webhook en caso de que no exista') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'TOKEN_REPO_PROFESOR1', variable: 'GITHUB_TOKEN')]) {
                         def existingWebhook = sh(
-                            script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/GRISE-UPM/Test/hooks',
+                            script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Luckvill/Test/hooks',
                             returnStdout: true).trim()
                         def URL = "http://" + sh(script: 'curl -s ifconfig.me', returnStdout: true).trim() + ":8080/github-webhook/"
                         // Verifica si el webhook ya existe en el repo, si no lo crea
@@ -38,7 +38,7 @@ pipeline {
                             -H "Authorization: token $GITHUB_TOKEN" \
                             -H "Accept: application/vnd.github.v3+json" \
                             -d '${payload}' \
-                            https://api.github.com/repos/GRISE-UPM/Test/hooks
+                            https://api.github.com/repos/Luckvill/Test/hooks
                             """
                         } else {
                             echo 'El webhook ya existe.'
@@ -61,7 +61,7 @@ pipeline {
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${status}' \
-                        https://api.github.com/repos/GRISE-UPM/Test/statuses/${pullRequestSHA}
+                        https://api.github.com/repos/Luckvill/Test/statuses/${pullRequestSHA}
                         """
                     }
                 } else {
@@ -72,7 +72,7 @@ pipeline {
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '{"state": "success", "description": "Database maintenance successful", "context": "Jenkins"}' \
-                        https://api.github.com/repos/Luckvill/Test/statuses/${commitSHA}
+                        https://api.github.com/repos/Lolailo123/Test/statuses/${commitSHA}
                         """
                     }
                 }
@@ -89,7 +89,7 @@ pipeline {
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${status}' \
-                        https://api.github.com/repos/GRISE-UPM/Test/statuses/${pullRequestSHA}
+                        https://api.github.com/repos/Luckvill/Test/statuses/${pullRequestSHA}
                         """
                     }
                 } else {
@@ -100,7 +100,7 @@ pipeline {
                         -H "Authorization: token $GITHUB_TOKEN" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '{"state": "failure", "description": "Database maintenance failed", "context": "Jenkins"}' \
-                        https://api.github.com/repos/Luckvill/Test/statuses/${commitSHA}
+                        https://api.github.com/repos/Lolailo123/Test/statuses/${commitSHA}
                         """
                     }
                 }
