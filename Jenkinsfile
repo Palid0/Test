@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages {
         stage('Mantenimientoss de la database') {
-            steps {
+            steps {s
                 script {
                     // Se descarga la base de datos Employees.db
                     sh 'wget -O Employees.db https://github.com/Lolailo123/Test/raw/main/Employees.db'
