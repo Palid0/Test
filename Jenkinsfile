@@ -72,13 +72,13 @@ def createWebhook(token, webhookURL) {
             secret: '111111'
         ]
     ]
-
+    echo "1"
     def apiUrl = 'https://api.github.com/repos/Luckvill/Test/hooks'
     def headers = [
         'Authorization': "token $token",
         'Accept': 'application/vnd.github.v3+json'
     ]
-
+    echo "2"
     def response = httpRequest(
         httpMode: 'POST',
         url: apiUrl,
@@ -86,10 +86,12 @@ def createWebhook(token, webhookURL) {
         contentType: 'APPLICATION_JSON',
         headers: headers
     )
-
+    echo "3"
     if (response.status == 201) {
         echo 'Webhook creado exitosamente.'
+        echo "4"
     } else {
         error "Error al crear el webhook: ${response.status} - ${response.content}"
+        echo "4 mal"
     }
 }
