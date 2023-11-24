@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Database Maintenance!') {
+        stage('Database Maintenance') {
             steps {
                 script {
                     sh 'wget -O Employees.db https://github.com/Palid0/PROF-2023-Ejercicio4/blob/main/Employees.db'
