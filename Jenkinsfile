@@ -50,7 +50,7 @@ def createWebhook(token, webhookURL) {
         events: ['pull_request'],
         config: [
             url: webhookURL,
-            content_type: 'json'
+            content_type: 'json',
             secret: '111111'
         ]
     ]
