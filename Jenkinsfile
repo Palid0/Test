@@ -29,11 +29,14 @@ pipeline {
                             script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Luckvill/Test/hooks',
                             returnStdout: true).trim()
                         def URL = "http://" + sh(script: 'curl -s ifconfig.me', returnStdout: true).trim() + ":8080/ghprbhook/"
-
+                        echo "hello"
                         // Check if the webhook exists
                         if (!existingWebhook.contains("$URL")) {
+                            echo "its me"
                             createWebhook(${GITHUB_TOKEN}, ${URL})
+                            echo ":D"
                         } else {
+                            echo "its not me"
                             echo 'Webhook exists.'
                         }
                     }
