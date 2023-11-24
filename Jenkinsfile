@@ -51,6 +51,7 @@ def createWebhook(token, webhookURL) {
         config: [
             url: webhookURL,
             content_type: 'json'
+            secret: '111111'
         ]
     ]
 
