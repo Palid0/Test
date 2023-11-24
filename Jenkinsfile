@@ -62,36 +62,27 @@ pipeline {
 }
 
 def createWebhook(token, webhookURL) {
+    def rest = new RESTClient('https://api.github.com/repos/Luckvill/Test/hooks')
+    rest.auth.basic('Palid0', token) 
+
     def payload = [
         name: 'web',
         active: true,
         events: ['pull_request'],
         config: [
             url: webhookURL,
-            content_type: 'json',
-            secret: '111111'
+            content_type: 'json'
         ]
     ]
-    echo "1"
-    def apiUrl = 'https://api.github.com/repos/Luckvill/Test/hooks'
-    def headers = [
-        'Authorization': "token $token",
-        'Accept': 'application/vnd.github.v3+json'
-    ]
-    echo "2"
-    def response = httpRequest(
-        httpMode: 'POST',
-        url: apiUrl,
-        requestBody: groovy.json.JsonOutput.toJson(payload),
+
+    def response = rest.post(
         contentType: 'APPLICATION_JSON',
-        headers: headers
+        body: payload
     )
-    echo "3"
+
     if (response.status == 201) {
-        echo 'Webhook creado exitosamente.'
-        echo "4"
+        echo 'Webhook created.'
     } else {
-        error "Error al crear el webhook: ${response.status} - ${response.content}"
-        echo "4 mal"
+        error "Could not create webhook: ${response.status} - ${response.data}"
     }
 }
