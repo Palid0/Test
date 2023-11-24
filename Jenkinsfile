@@ -45,7 +45,7 @@ pipeline {
                                 curl -X POST \
                                 -H "Authorization: token $GITHUB_TOKEN" \
                                 -H "Accept: application/vnd.github.v3+json" \
-                                -d '${payload as groovy.json.JsonOutput}' \
+                                -d '${payload}' \
                                 https://api.github.com/repos/Luckvill/Test/hooks
                             """
                         } else {
