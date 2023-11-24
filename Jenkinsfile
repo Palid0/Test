@@ -33,7 +33,7 @@ pipeline {
                         // Check if the webhook exists
                         if (!existingWebhook.contains("$URL")) {
                             echo "its me"
-                            createWebhook(${GITHUB_TOKEN}, ${URL})
+                            createWebhook(GITHUB_TOKEN, URL)
                             echo ":D"
                         } else {
                             echo "its not me"
