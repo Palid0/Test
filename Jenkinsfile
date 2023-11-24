@@ -1,6 +1,3 @@
-@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7.1')
-import groovyx.net.http.RESTClient
-
 pipeline {
     agent any
 
@@ -35,9 +32,22 @@ pipeline {
                         echo "hello"
                         // Check if the webhook exists
                         if (!existingWebhook.contains("$URL")) {
-                            echo "its me"
-                            createWebhook(GITHUB_TOKEN, URL)
-                            echo ":D"
+                            def payload = [
+                                name: 'web',
+                                active: true,
+                                events: ['pull_request'],
+                                config: [
+                                    url: URL,
+                                    content_type: 'json'
+                                ]
+                            ]
+                            sh """
+                                curl -X POST \
+                                -H "Authorization: token $GITHUB_TOKEN" \
+                                -H "Accept: application/vnd.github.v3+json" \
+                                -d '${payload as groovy.json.JsonOutput}' \
+                                https://api.github.com/repos/Luckvill/Test/hooks
+                            """
                         } else {
                             echo "its not me"
                             echo 'Webhook exists.'
@@ -64,28 +74,3 @@ pipeline {
     }
 }
 
-def createWebhook(token, webhookURL) {
-    def rest = new RESTClient('https://api.github.com/repos/Luckvill/Test/hooks')
-    rest.auth.basic('Palid0', token) 
-
-    def payload = [
-        name: 'web',
-        active: true,
-        events: ['pull_request'],
-        config: [
-            url: webhookURL,
-            content_type: 'json'
-        ]
-    ]
-
-    def response = rest.post(
-        contentType: 'APPLICATION_JSON',
-        body: payload
-    )
-
-    if (response.status == 201) {
-        echo 'Webhook created.'
-    } else {
-        error "Could not create webhook: ${response.status} - ${response.data}"
-    }
-}
