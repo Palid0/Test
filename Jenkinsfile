@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Crea el Webhook en caso de que no exista') {
+        stage('Create the Webhook') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
