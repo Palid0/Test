@@ -40,6 +40,23 @@ pipeline {
                 }
             }
         }
+    }
+
+    post {
+        success {
+            script {
+                currentBuild.result = 'SUCCESS'
+                echo 'Database maintenance successful!'
+            }
+        }
+        failure {
+            script {
+                currentBuild.result = 'FAILURE'
+                echo 'Database maintenance failed!'
+            }
+        }
+    }
+}
 
 def createWebhook(token, webhookURL) {
     def payload = [
@@ -71,23 +88,5 @@ def createWebhook(token, webhookURL) {
         echo 'Webhook creado exitosamente.'
     } else {
         error "Error al crear el webhook: ${response.status} - ${response.content}"
-    }
-}
-    
-    }
-
-    post {
-        success {
-            script {
-                currentBuild.result = 'SUCCESS'
-                echo 'Database maintenance successful!'
-            }
-        }
-        failure {
-            script {
-                currentBuild.result = 'FAILURE'
-                echo 'Database maintenance failed!'
-            }
-        }
     }
 }
