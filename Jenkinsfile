@@ -41,11 +41,12 @@ pipeline {
                                     content_type: 'json'
                                 ]
                             ]
+                            def jsonPayload = groovy.json.JsonOutput.toJson(payload)
                             sh """
                                 curl -X POST \
                                 -H "Authorization: token $GITHUB_TOKEN" \
                                 -H "Accept: application/vnd.github.v3+json" \
-                                -d '${payload}' \
+                                -d '${jsonPayload}' \
                                 https://api.github.com/repos/Luckvill/Test/hooks
                             """
                         } else {
