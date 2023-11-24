@@ -40,7 +40,6 @@ pipeline {
                 }
             }
         }
-    }
 
 def createWebhook(token, webhookURL) {
     def payload = [
