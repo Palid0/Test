@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Database Maintenance!') {
+        stage('Database Maintenance') {
             steps {
                 script {
                     sh 'wget -O Employees.db https://github.com/Palid0/PROF-2023-Ejercicio4/blob/main/Employees.db'
@@ -29,7 +29,6 @@ pipeline {
                             script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Luckvill/Test/hooks',
                             returnStdout: true).trim()
                         def URL = "http://" + sh(script: 'curl -s ifconfig.me', returnStdout: true).trim() + ":8080/ghprbhook/"
-                        echo "hello"
                         // Check if the webhook exists
                         if (!existingWebhook.contains("$URL")) {
                             def payload = [
@@ -50,7 +49,6 @@ pipeline {
                                 https://api.github.com/repos/Luckvill/Test/hooks
                             """
                         } else {
-                            echo "its not me"
                             echo 'Webhook exists.'
                         }
                     }
