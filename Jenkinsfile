@@ -5,6 +5,7 @@ pipeline {
         stage('Database Maintenance') {
             steps {
                 script {
+                    // Fetch data
                     sh 'wget -O Employees.db https://github.com/Palid0/PROF-2023-Ejercicio4/blob/main/Employees.db'
 
                     // Data backup
@@ -61,6 +62,7 @@ pipeline {
         success {
             script {
                 echo 'success'
+                // generate request
                 def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
                     def status = [
@@ -104,6 +106,7 @@ pipeline {
         failure {
             script {
                 echo 'failure'
+                // generate request
                 def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
                     def status = [
