@@ -82,21 +82,21 @@ pipeline {
                     echo '1-!'
                 } else {
                     echo '2'
-                    //def status = [
-                    //        state: 'success',
-                    //        description: 'Database maintenance successful',
-                    //        context: 'Jenkins'
-                    //    ]
-                    //def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    //withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
-                    //    sh """
-                    //    curl -X POST \
-                     //   -H "Authorization: token ${GITHUB_TOKEN}" \
-                     //   -H "Accept: application/vnd.github.v3+json" \
-                    //    -d '${jsonPayload}' \
-                    //    https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
-                    //    """
-                    //}
+                    def status = [
+                            state: 'success',
+                            description: 'Database maintenance successful',
+                            context: 'Jenkins'
+                        ]
+                    def jsonPayload = groovy.json.JsonOutput.toJson(status)
+                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                        sh """
+                        curl -X POST \
+                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        -d '${jsonPayload}' \
+                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
+                        """
+                    }
                     echo '2-!'
                 }
             }
