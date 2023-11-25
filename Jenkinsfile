@@ -58,9 +58,9 @@ pipeline {
     }
 
     post {
-        def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
         success {
             script {
+                def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
                     def status = [
                             state: 'success',
@@ -92,6 +92,7 @@ pipeline {
         }
         failure {
             script {
+                def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
                     def status = [
                             state: 'failure',
