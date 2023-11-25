@@ -69,7 +69,7 @@ pipeline {
                       //      context: 'Jenkins'
                         //]
                     //def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    //echo '1'
+                    echo '1'
                     //withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
                      //   sh """
                       //  curl -X POST \
@@ -78,7 +78,7 @@ pipeline {
                       //  -d '${jsonPayload}' \
                       //  https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
                       //  """
-                    }
+                    //}
                     echo '1-!'
                 } else {
                     echo '2'
