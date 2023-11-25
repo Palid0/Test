@@ -68,13 +68,13 @@ pipeline {
                             context: 'Jenkins'
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
-                        -d '${jsonPaylod}' \
-                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
+                        -d '${jsonPayload}' \
+                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
                         """
                     }
                 } else {
