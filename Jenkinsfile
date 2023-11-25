@@ -78,7 +78,7 @@ pipeline {
                         """
                     }
                 } else {
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'JENKINS', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -110,7 +110,7 @@ pipeline {
                         """
                     }
                 } else {
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'JENKINS', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token $GITHUB_TOKEN" \
