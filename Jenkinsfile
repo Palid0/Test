@@ -58,16 +58,67 @@ pipeline {
     }
 
     post {
+        def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
         success {
             script {
-                currentBuild.result = 'SUCCESS'
-                echo 'Database maintenance successful!'
+                if (env.CHANGE_ID != null) {
+                    def status = [
+                            state: 'success',
+                            description: 'Pull Request build successfull',
+                            context: 'Jenkins'
+                        ]
+                    def jsonPayload = groovy.json.JsonOutput.toJson(status)
+                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                        sh """
+                        curl -X POST \
+                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        -d '${jsonPaylod}' \
+                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
+                        """
+                    }
+                } else {
+                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                        sh """
+                        curl -X POST \
+                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        -d '{"state": "success", "description": "Database maintenance successful", "context": "Jenkins"}' \
+                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
+                        """
+                    }
+                }
             }
         }
         failure {
             script {
-                currentBuild.result = 'FAILURE'
-                echo 'Database maintenance failed!'
+                if (env.CHANGE_ID != null) {
+                    def status = [
+                            state: 'failure',
+                            description: 'Pull Request build failed',
+                            context: 'Jenkins'
+                        ]
+                    def jsonPayload = groovy.json.JsonOutput.toJson(status)
+                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                        sh """
+                        curl -X POST \
+                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        -d '${jsonPayload}' \
+                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
+                        """
+                    }
+                } else {
+                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                        sh """
+                        curl -X POST \
+                        -H "Authorization: token $GITHUB_TOKEN" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        -d '{"state": "failure", "description": "Database maintenance failed", "context": "Jenkins"}' \
+                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
+                        """
+                    }
+                }
             }
         }
     }
