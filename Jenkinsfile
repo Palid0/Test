@@ -70,13 +70,13 @@ pipeline {
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
                     echo '1'
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
-                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
+                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
                         """
                     }
                 } else {
@@ -105,13 +105,13 @@ pipeline {
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
                     echo '1'
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
                         sh """
                         curl -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
-                        https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
+                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
                         """
                     }
                 } else {
