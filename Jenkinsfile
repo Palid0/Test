@@ -63,8 +63,10 @@ pipeline {
             script {
                 echo 'success'
                 // generate request
-                def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
+                    echo '1'
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+
                     def status = [
                             state: 'success',
                             description: 'Pull Request build successfull',
@@ -81,8 +83,10 @@ pipeline {
                         https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
                         """
                     }
-                    echo '1-!'
+                    
                 } else {
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+
                     echo '2'
                     def status = [
                             state: 'success',
