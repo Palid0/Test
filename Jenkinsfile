@@ -35,7 +35,7 @@ pipeline {
                             def payload = [
                                 name: 'web',
                                 active: true,
-                                events: ['pull_request'],
+                                events: ['pull_request', 'status'],
                                 config: [
                                     url: URL,
                                     content_type: 'json'
