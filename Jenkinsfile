@@ -38,7 +38,7 @@ pipeline {
                                 events: ['pull_request', 'status'],
                                 config: [
                                     url: URL,
-                                    content_type: 'json'
+                                    content_type: 'json',
                                     secret: "235"
                                 ]
                             ]
