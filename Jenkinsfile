@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Database Maintenance') {
+        stage('Database Maintenances') {
             steps {
                 script {
                     // Fetch data
