@@ -63,7 +63,7 @@ pipeline {
             script {
                 echo 'success'
                 // generate request
-                if (env.CHANGE_ID != null) {
+                if (env.ghprbActualCommit != null) {
                     echo '1'
                     def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
 
