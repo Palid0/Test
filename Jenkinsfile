@@ -39,7 +39,7 @@ pipeline {
                                 config: [
                                     url: URL,
                                     content_type: 'json'
-                                   
+                                    secret: "235"
                                 ]
                             ]
                             def jsonPayload = groovy.json.JsonOutput.toJson(payload)
