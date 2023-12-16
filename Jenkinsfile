@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Database Maintenances') {
+        stage('Database Maintenance') {
             steps {
                 script {
                     // Fetch data
@@ -25,9 +25,9 @@ pipeline {
         stage('Create the Webhook') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'TOKEN_UPM', variable: 'TOKEN_EJ4')]) {
                         def existingWebhook = sh(
-                            script: 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/Luckvill/Test/hooks',
+                            script: 'curl -s -H "Authorization: token $TOKEN_EJ4" https://api.github.com/repos/Luckvill/Test/hooks',
                             returnStdout: true).trim()
                         def URL = "http://" + sh(script: 'curl -s ifconfig.me', returnStdout: true).trim() + ":8080/ghprbhook/"
                         // Check if the webhook exists
@@ -44,10 +44,10 @@ pipeline {
                             def jsonPayload = groovy.json.JsonOutput.toJson(payload)
                             sh """
                                 curl -X POST \
-                                -H "Authorization: token $GITHUB_TOKEN" \
+                                -H "Authorization: token $TOKEN_EJ4" \
                                 -H "Accept: application/vnd.github.v3+json" \
                                 -d '${jsonPayload}' \
-                                https://api.github.com/repos/Luckvill/Test/hooks
+                                https://api.github.com/repos/GRISE-UPM/PROF-2023-Ejercicio4/hooks
                             """
                         } else {
                             echo 'Webhook exists.'
@@ -64,46 +64,40 @@ pipeline {
                 echo 'success'
                 // generate request
                 if (env.ghprbActualCommit != null) {
-                    echo '1'
-                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-
                     def status = [
                             state: 'success',
-                            description: 'Pull Request build successfull',
+                            description: 'GRISE-UPM > Managed to build pull request',
                             context: 'Jenkins'
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    echo '1'
-                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    withCredentials([string(credentialsId: 'TOKEN_UPM', variable: 'TOKEN_EJ4')]) {
                         sh """
                         curl -X POST \
-                        -H "Authorization: token $GITHUB_TOKEN" \
+                        -H "Authorization: token $TOKEN_EJ4" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
-                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
+                        https://api.github.com/repos/GRISE-UPM/PROF-2023-Ejercicio4/statuses/${pullRequestSHA}
                         """
                     }
                     
                 } else {
-                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-
-                    echo '2'
                     def status = [
                             state: 'success',
-                            description: 'Database maintenance successful',
+                            description: 'Palid0 > Successfully maintained database',
                             context: 'Jenkins'
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    withCredentials([string(credentialsId: 'Eric', variable: 'TOKEN_EJ4')]) {
                         sh """
                         curl -X POST \
-                        -H "Authorization: token $GITHUB_TOKEN" \
+                        -H "Authorization: token $TOKEN_EJ4" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
                         https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
                         """
                     }
-                    echo '2-!'
                 }
             }
         }
@@ -111,43 +105,40 @@ pipeline {
             script {
                 echo 'failure'
                 // generate request
-                def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 if (env.CHANGE_ID != null) {
                     def status = [
                             state: 'failure',
-                            description: 'Pull Request build failed',
+                            description: 'GRISE-UPM > Pull request could not be built',
                             context: 'Jenkins'
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    echo '3'
-                    withCredentials([string(credentialsId: 'Borrar', variable: 'GITHUB_TOKEN')]) {
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    withCredentials([string(credentialsId: 'TOKEN_UPM', variable: 'TOKEN_EJ4')]) {
                         sh """
                         curl -X POST \
-                        -H "Authorization: token $GITHUB_TOKEN" \
+                        -H "Authorization: token $TOKEN_EJ4" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
-                        https://api.github.com/repos/Luckvill/Test/statuses/${RequestSHA}
+                        https://api.github.com/repos/GRISE-UPM/PROF-2023-Ejercicio4/statuses/${pullRequestSHA}
                         """
                     }
-                    echo '3-!'
                 } else {
-                    echo '4'
                     def status = [
                             state: 'failure',
-                            description: 'Database maintenance failed',
+                            description: 'Palid0 > Could not update database',
                             context: 'Jenkins'
                         ]
                     def jsonPayload = groovy.json.JsonOutput.toJson(status)
-                    withCredentials([string(credentialsId: 'Eric', variable: 'GITHUB_TOKEN')]) {
+                    def RequestSHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    withCredentials([string(credentialsId: 'Eric', variable: 'TOKEN_EJ4')]) {
                         sh """
                         curl -X POST \
-                        -H "Authorization: token $GITHUB_TOKEN" \
+                        -H "Authorization: token $TOKEN_EJ4" \
                         -H "Accept: application/vnd.github.v3+json" \
                         -d '${jsonPayload}' \
                         https://api.github.com/repos/Palid0/Test/statuses/${RequestSHA}
                         """
                     }
-                    echo '4-!'
                 }
             }
         }
